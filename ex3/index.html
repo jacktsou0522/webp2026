@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+    <meta charset="UTF-8">
+    <title>課程列表</title>
+    <style>
+        /* CSS：模仿你截圖中的綠色表格樣式 */
+        table {
+            width: 80%;
+            margin: 40px auto;
+            border-collapse: collapse;
+            font-family: sans-serif;
+        }
+        th, td {
+            border: 1px solid #e0e0e0;
+            padding: 12px;
+            text-align: left;
+        }
+        th {
+            background-color: #00b050; /* 類似投影片截圖的綠色 */
+            color: white;
+        }
+        tr:nth-child(even) {
+            background-color: #f5f5f5; /* 讓表格有斑馬紋，比較好閱讀 */
+        }
+        h2 {
+            text-align: center;
+            font-family: sans-serif;
+            color: #333;
+        }
+    </style>
+</head>
+<body>
+    <h2>HW#1 課程清單</h2>
+    
+    <table id="courseTable">
+        <thead>
+            <tr>
+                <th>開課單位</th>
+                <th>課程名稱</th>
+                <th>授課教師</th>
+            </tr>
+        </thead>
+        <tbody>
+            </tbody>
+    </table>
+
+    <script>
+        // JavaScript：網頁跟 Django API 溝通的橋樑
+        // 用 fetch 去呼叫我們剛剛寫好的 /courselist API
+        fetch('/courselist')
+            .then(response => response.json()) // 把收到的資料轉成 JSON 格式
+            .then(data => {
+                const tbody = document.querySelector('#courseTable tbody');
+                
+                // 跑迴圈，把每一筆課程都做成一列 (<tr>) 塞進表格裡
+                data.forEach(course => {
+                    const tr = document.createElement('tr');
+                    tr.innerHTML = `
+                        <td>${course.Department}</td>
+                        <td>${course.CourseTitle}</td>
+                        <td>${course.Instructor}</td>
+                    `;
+                    tbody.appendChild(tr);
+                });
+            })
+            .catch(error => console.error('抓取資料失敗:', error));
+    </script>
+</body>
+</html>
