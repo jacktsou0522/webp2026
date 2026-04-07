@@ -3,65 +3,131 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>我的個人網頁</title>
+    <title>鄒承翰的個人網頁 | My Resume</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
     <style>
-        .hero-section { padding: 60px 0; background-color: #f8f9fa; }
-        .skill-badge { margin-right: 5px; }
+        body { font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; }
+        .hero-section { 
+            padding: 100px 0; 
+            background: linear-gradient(rgba(0,0,0,0.7), rgba(0,0,0,0.7)), url('https://www.cgu.edu.tw/var/file/0/1000/img/14/logo.png');
+            background-size: contain;
+            background-repeat: no-repeat;
+            background-position: center;
+            color: white;
+            background-color: #5b0d0d; /* 長庚大學代表色系 */
+        }
+        .section-title { border-left: 5px solid #a51c30; padding-left: 15px; margin-bottom: 30px; color: #a51c30; }
+        .card { transition: transform 0.3s; }
+        .card:hover { transform: translateY(-5px); }
     </style>
 </head>
 <body>
 
-    <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+    <nav class="navbar navbar-expand-lg navbar-dark bg-dark sticky-top">
         <div class="container">
-            <a class="navbar-brand" href="#">My Resume</a>
-            <div class="navbar-nav">
-                <a class="nav-link" href="#about">About</a>
-                <a class="nav-link" href="#experience">Experience</a>
+            <a class="navbar-brand" href="#">鄒承翰 (Tsou Cheng-Han)</a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav ms-auto">
+                    <li class="nav-item"><a class="nav-link" href="#about">About</a></li>
+                    <li class="nav-item"><a class="nav-link" href="#skills">Tech Stack</a></li>
+                    <li class="nav-item"><a class="nav-link" href="#experience">Experience</a></li>
+                </ul>
             </div>
         </div>
     </nav>
 
     <header class="hero-section text-center">
         <div class="container">
-            <h1>李文廷 (Lee Wen-Ting)</h1> <p class="lead">大學生 | 電機工程系 (Electrical Engineering)</p>
-            <p>Email: hello@yourwebsite.com</p> [cite: 16]
+            <h1 class="display-3 fw-bold">鄒承翰 (Cheng-Han Tsou)</h1>
+            <p class="lead">長庚大學 (Chang Gung University) | 資訊工程學系 (CSIE)</p>
+            <p>熱衷於軟體開發與系統架構設計</p>
+            <a href="mailto:jacktsou0522@gmail.com" class="btn btn-outline-light btn-lg">Get In Touch</a>
         </div>
     </header>
 
     <section id="about" class="py-5">
         <div class="container">
-            <h2 class="border-bottom pb-2">ABOUT ME (關於我)</h2> 
-            <p>我目前就讀於中原大學電機系，對網頁開發與嵌入式系統有濃厚興趣。</p>
+            <h2 class="section-title">ABOUT ME (關於我)</h2>
+            <div class="row align-items-center">
+                <div class="col-md-8">
+                    <p>你好！我是鄒承翰。目前就讀於 **長庚大學資訊工程學系** 。作為一名資工系學生，我致力於學習各種程式語言與開發工具，並享受解決複雜問題的過程。</p>
+                    <p>我喜歡探索新技術，從前端網頁設計到後端伺服器管理都有所涉獵，目標是成為一名全方位的資深應用程式開發者 (Senior App Developer) [cite: 15]。</p>
+                </div>
+                <div class="col-md-4">
+                    <div class="p-4 bg-light rounded shadow-sm text-center">
+                        <h5>基本資訊</h5>
+                        <p class="mb-1 text-muted small">Location: Linkou, Taiwan</p>
+                        <p class="mb-0 text-muted small">University: CGU CSIE</p>
+                    </div>
+                </div>
+            </div>
         </div>
     </section>
 
-    <section class="py-5 bg-light">
+    <section id="skills" class="py-5 bg-light">
         <div class="container">
-            <h2>TECH STACK (技術能力)</h2> 
-            <div>
-                <span class="badge bg-primary">JavaScript</span> [cite: 19]
-                <span class="badge bg-info text-dark">ReactJS</span> [cite: 20]
-                <span class="badge bg-success">Python</span> [cite: 23]
-                <span class="badge bg-warning text-dark">Verilog</span>
+            <h2 class="section-title text-center">TECH STACK (技術棧) [cite: 18]</h2>
+            <div class="row g-4 text-center">
+                <div class="col-6 col-md-3">
+                    <div class="card border-0 shadow-sm p-3"><h5>JavaScript [cite: 19]</h5></div>
+                </div>
+                <div class="col-6 col-md-3">
+                    <div class="card border-0 shadow-sm p-3"><h5>ReactJS [cite: 20]</h5></div>
+                </div>
+                <div class="col-6 col-md-3">
+                    <div class="card border-0 shadow-sm p-3"><h5>Python [cite: 23, 63]</h5></div>
+                </div>
+                <div class="col-6 col-md-3">
+                    <div class="card border-0 shadow-sm p-3"><h5>Linux [cite: 59, 65]</h5></div>
+                </div>
+                <div class="col-6 col-md-3">
+                    <div class="card border-0 shadow-sm p-3"><h5>PHP / Laravel [cite: 56, 63]</h5></div>
+                </div>
+                <div class="col-6 col-md-3">
+                    <div class="card border-0 shadow-sm p-3"><h5>DevOps [cite: 37]</h5></div>
+                </div>
+                <div class="col-6 col-md-3">
+                    <div class="card border-0 shadow-sm p-3"><h5>MongoDB [cite: 24]</h5></div>
+                </div>
+                <div class="col-6 col-md-3">
+                    <div class="card border-0 shadow-sm p-3"><h5>Bash Script [cite: 63]</h5></div>
+                </div>
             </div>
         </div>
     </section>
 
     <section id="experience" class="py-5">
         <div class="container">
-            <h2>WORK EXPERIENCE (工作經驗)</h2> 
-            <div class="card mb-3">
-                <div class="card-body">
-                    <h5 class="card-title">大學專案 - RISC-V CPU 設計</h5>
-                    <p class="card-text">使用 Verilog 實作五階段管線處理器。</p>
+            <h2 class="section-title">WORK EXPERIENCE (經驗) [cite: 25]</h2>
+            <div class="timeline">
+                <div class="card mb-4 border-0 shadow-sm">
+                    <div class="card-body">
+                        <div class="d-flex justify-content-between">
+                            <h5 class="fw-bold">Web Application Development [cite: 49]</h5>
+                            <span class="badge bg-secondary">Ongoing</span>
+                        </div>
+                        <p class="text-muted">長庚大學 資訊工程學系 專案實作</p>
+                        <ul>
+                            <li>負責開發與設計具備 RWD 功能的個人化網頁 。</li>
+                            <li>整合 Bootstrap 框架以優化 UI/UX 體驗 。</li>
+                            <li>使用 Github Pages 進行網頁部署與版本管理 [cite: 2, 7]。</li>
+                        </ul>
+                    </div>
                 </div>
             </div>
         </div>
     </section>
 
-    <footer class="text-center py-4 border-top">
-        <p>&copy; 2026 CHANG GUNG UNIVERSITY (長庚大學) 作業展示</p> [cite: 6, 35]
+    <footer class="text-center py-5 border-top">
+        <div class="container">
+            <img src="https://www.cgu.edu.tw/var/file/0/1000/img/14/logo.png" alt="CGU Logo" style="height: 50px;" class="mb-3">
+            <p class="mb-0 text-muted">CHANG GUNG UNIVERSITY (長庚大學) [cite: 6, 36, 48]</p>
+            <p class="small text-muted">Established in 1987 [cite: 6, 36, 48]</p>
+            <p class="mt-3 fw-bold small text-uppercase">Deadline: 2026/04/07 23:59 </p>
+        </div>
     </footer>
 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
