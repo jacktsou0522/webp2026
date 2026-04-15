@@ -1,12 +1,48 @@
-<h2>景點觀光展覽資訊</h2>
-<table border="1" id="exhibition-table">
-    <thead>
-        <tr style="background-color: #16a085; color: white;">
-            <th>名稱 (Name)</th>
-            <th>地點 (Location)</th>
-            <th>票價 (Ticket Price)</th>
-        </tr>
-    </thead>
-    <tbody id="table-body">
-        </tbody>
-</table>
+<script>
+    // 這是資料來源的網址 (範例使用一個公開的展覽資料 API)
+    // 如果你有老師提供的特定 API 網址，請替換掉這裡
+    const apiUrl = 'https://cloud.culture.tw/frontsite/trans/SearchShowAction.do?method=doFindTypeJ&category=6';
+
+    async function fetchData() {
+        try {
+            // 使用 fetch 發送 Request (請求)
+            const response = await fetch(apiUrl);
+            
+            // 檢查回應狀態是否正常
+            if (!response.ok) throw new Error('連線失敗');
+
+            // 將回傳的資料轉為 JSON 格式
+            const data = await response.json();
+            
+            // 取得 HTML 中的 tbody 元素
+            const tableBody = document.getElementById('table-body');
+            
+            // 清空目前的內容 (以防萬一)
+            tableBody.innerHTML = '';
+
+            // 使用 loop (迴圈) 將每一筆資料塞入表格
+            // 注意：API 欄位名稱需根據實際回傳的 JSON 調整
+            data.forEach(item => {
+                const row = document.createElement('tr');
+                
+                // 處理票價，如果沒有資料就顯示「請洽官網」
+                const priceInfo = item.showInfo[0].price || '請洽官網';
+                const locationInfo = item.showInfo[0].location || '未定';
+
+                row.innerHTML = `
+                    <td>${item.title} (名稱)</td>
+                    <td>${locationInfo} (地點)</td>
+                    <td>${priceInfo} (票價)</td>
+                `;
+                tableBody.appendChild(row);
+            });
+
+        } catch (error) {
+            console.error("發生錯誤 (Error):", error);
+            document.getElementById('table-body').innerHTML = '<tr><td colspan="3">載入失敗，請檢查網路或 API 網址</td></tr>';
+        }
+    }
+
+    // 呼叫執行
+    fetchData();
+</script>
