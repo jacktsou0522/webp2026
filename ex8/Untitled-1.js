@@ -1,4 +1,5 @@
-var openUrl = "https://cloud.culture.tw/frontsite/trans/SearchShowAction.do?method=doFindTypeJ&category=6";
+// 使用 cors-anywhere 代理伺服器 (開發測試常用)
+var openUrl = "https://cors-anywhere.herokuapp.com/https://cloud.culture.tw/frontsite/trans/SearchShowAction.do?method=doFindTypeJ&category=6";
 
 // 修正重點：使用 DOMContentLoaded 確保 HTML 載入完畢
 document.addEventListener('DOMContentLoaded', function() {
