@@ -1,41 +1,46 @@
 <script>
+    // 建議先用這組資料測試，確認你的 Table (表格) 渲染邏輯沒問題
     var openUrl = "https://cloud.culture.tw/frontsite/trans/SearchShowAction.do?method=doFindTypeJ&category=6";
 
     async function fetchData() {
-        console.log("開始抓取資料...");
+        console.log("嘗試抓取資料中...");
+        var tableBody = document.getElementById('table-body');
+        
+        // 顯示載入中的訊息 (User Feedback)
+        tableBody.innerHTML = '<tr><td colspan="3">資料載入中，請稍候...</td></tr>';
+
         try {
             const response = await fetch(openUrl);
-            const data = await response.json();
-            console.log("成功取得資料，數量：", data.length);
-
-            var tableBody = document.getElementById('table-body');
-            if (!tableBody) {
-                console.error("找不到 table-body 元素！");
-                return;
+            
+            // 檢查回應狀態
+            if (!response.ok) {
+                throw new Error(`HTTP 錯誤！狀態碼: ${response.status}`);
             }
+
+            const data = await response.json();
+            console.log("成功解析 JSON (JSON Parsing Success):", data);
 
             tableBody.innerHTML = ""; // 清空
 
-            data.forEach((item, index) => {
-                // 只取前 10 筆練習，避免網頁跑太久
-                if (index < 10) {
-                    var info = (item.showInfo && item.showInfo.length > 0) ? item.showInfo[0] : {};
-                    
-                    var row = document.createElement('tr');
-                    row.innerHTML = `
-                        <td>${item.title}</td>
-                        <td>${info.location || "無地點資訊"}</td>
-                        <td>${info.price || "免費"}</td>
-                    `;
-                    tableBody.appendChild(row);
-                }
+            data.slice(0, 10).forEach((item) => {
+                var info = (item.showInfo && item.showInfo.length > 0) ? item.showInfo[0] : {};
+                
+                var row = document.createElement('tr');
+                row.innerHTML = `
+                    <td>${item.title} (名稱)</td>
+                    <td>${info.location || "無地點資訊"} (地點)</td>
+                    <td>${info.price || "免費"} (票價)</td>
+                `;
+                tableBody.appendChild(row);
             });
-            console.log("表格渲染完成！");
+            console.log("表格渲染完成 (Rendering Finished)！");
+
         } catch (error) {
-            console.error("發生錯誤了：", error);
-            document.getElementById('table-body').innerHTML = '<tr><td colspan="3">資料載入失敗，請查看 Console 錯誤訊息</td></tr>';
+            console.error("Debug 訊息:", error);
+            tableBody.innerHTML = `<tr><td colspan="3" style="color:red;">資料載入失敗！原因：${error.message}</td></tr>`;
         }
     }
 
-    fetchData();
+    // 確保 DOM 讀取完才執行 (Event Listener)
+    document.addEventListener('DOMContentLoaded', fetchData);
 </script>
