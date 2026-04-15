@@ -1,46 +1,13 @@
-<script>
-    // 建議先用這組資料測試，確認你的 Table (表格) 渲染邏輯沒問題
-    var openUrl = "https://cloud.culture.tw/frontsite/trans/SearchShowAction.do?method=doFindTypeJ&category=6";
-
-    async function fetchData() {
-        console.log("嘗試抓取資料中...");
-        var tableBody = document.getElementById('table-body');
-        
-        // 顯示載入中的訊息 (User Feedback)
-        tableBody.innerHTML = '<tr><td colspan="3">資料載入中，請稍候...</td></tr>';
-
-        try {
-            const response = await fetch(openUrl);
-            
-            // 檢查回應狀態
-            if (!response.ok) {
-                throw new Error(`HTTP 錯誤！狀態碼: ${response.status}`);
-            }
-
-            const data = await response.json();
-            console.log("成功解析 JSON (JSON Parsing Success):", data);
-
-            tableBody.innerHTML = ""; // 清空
-
-            data.slice(0, 10).forEach((item) => {
-                var info = (item.showInfo && item.showInfo.length > 0) ? item.showInfo[0] : {};
-                
-                var row = document.createElement('tr');
-                row.innerHTML = `
-                    <td>${item.title} (名稱)</td>
-                    <td>${info.location || "無地點資訊"} (地點)</td>
-                    <td>${info.price || "免費"} (票價)</td>
-                `;
-                tableBody.appendChild(row);
-            });
-            console.log("表格渲染完成 (Rendering Finished)！");
-
-        } catch (error) {
-            console.error("Debug 訊息:", error);
-            tableBody.innerHTML = `<tr><td colspan="3" style="color:red;">資料載入失敗！原因：${error.message}</td></tr>`;
-        }
-    }
-
-    // 確保 DOM 讀取完才執行 (Event Listener)
-    document.addEventListener('DOMContentLoaded', fetchData);
-</script>
+<h2>景點觀光展覽資訊</h2>
+<table border="1" style="width: 100%; border-collapse: collapse;">
+    <thead>
+        <tr style="background-color: #16a085; color: white;">
+            <th>名稱 (Name)</th>
+            <th>地點 (Location)</th>
+            <th>票價 (Ticket Price)</th>
+        </tr>
+    </thead>
+    <tbody id="table-body">
+        <tr><td colspan="3">等待 JavaScript 載入中...</td></tr>
+    </tbody>
+</table>
