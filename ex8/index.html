@@ -1,48 +1,41 @@
 <script>
-    // 這是資料來源的網址 (範例使用一個公開的展覽資料 API)
-    // 如果你有老師提供的特定 API 網址，請替換掉這裡
-    const apiUrl = 'https://cloud.culture.tw/frontsite/trans/SearchShowAction.do?method=doFindTypeJ&category=6';
+    var openUrl = "https://cloud.culture.tw/frontsite/trans/SearchShowAction.do?method=doFindTypeJ&category=6";
 
     async function fetchData() {
+        console.log("開始抓取資料...");
         try {
-            // 使用 fetch 發送 Request (請求)
-            const response = await fetch(apiUrl);
-            
-            // 檢查回應狀態是否正常
-            if (!response.ok) throw new Error('連線失敗');
-
-            // 將回傳的資料轉為 JSON 格式
+            const response = await fetch(openUrl);
             const data = await response.json();
-            
-            // 取得 HTML 中的 tbody 元素
-            const tableBody = document.getElementById('table-body');
-            
-            // 清空目前的內容 (以防萬一)
-            tableBody.innerHTML = '';
+            console.log("成功取得資料，數量：", data.length);
 
-            // 使用 loop (迴圈) 將每一筆資料塞入表格
-            // 注意：API 欄位名稱需根據實際回傳的 JSON 調整
-            data.forEach(item => {
-                const row = document.createElement('tr');
-                
-                // 處理票價，如果沒有資料就顯示「請洽官網」
-                const priceInfo = item.showInfo[0].price || '請洽官網';
-                const locationInfo = item.showInfo[0].location || '未定';
+            var tableBody = document.getElementById('table-body');
+            if (!tableBody) {
+                console.error("找不到 table-body 元素！");
+                return;
+            }
 
-                row.innerHTML = `
-                    <td>${item.title} (名稱)</td>
-                    <td>${locationInfo} (地點)</td>
-                    <td>${priceInfo} (票價)</td>
-                `;
-                tableBody.appendChild(row);
+            tableBody.innerHTML = ""; // 清空
+
+            data.forEach((item, index) => {
+                // 只取前 10 筆練習，避免網頁跑太久
+                if (index < 10) {
+                    var info = (item.showInfo && item.showInfo.length > 0) ? item.showInfo[0] : {};
+                    
+                    var row = document.createElement('tr');
+                    row.innerHTML = `
+                        <td>${item.title}</td>
+                        <td>${info.location || "無地點資訊"}</td>
+                        <td>${info.price || "免費"}</td>
+                    `;
+                    tableBody.appendChild(row);
+                }
             });
-
+            console.log("表格渲染完成！");
         } catch (error) {
-            console.error("發生錯誤 (Error):", error);
-            document.getElementById('table-body').innerHTML = '<tr><td colspan="3">載入失敗，請檢查網路或 API 網址</td></tr>';
+            console.error("發生錯誤了：", error);
+            document.getElementById('table-body').innerHTML = '<tr><td colspan="3">資料載入失敗，請查看 Console 錯誤訊息</td></tr>';
         }
     }
 
-    // 呼叫執行
     fetchData();
 </script>
