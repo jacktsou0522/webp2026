@@ -1,30 +1,41 @@
-var openUrl = "https://cloud.culture.tw/frontsite/trans/SearchShowAction.do?method=doFindTypeJ&category=6";
+async function fetchData() {
+    var openUrl = "https://cloud.culture.tw/frontsite/trans/SearchShowAction.do?method=doFindTypeJ&category=6";
+    var tableBody = document.getElementById('table-body');
 
-function fetchData() {
-    fetch(openUrl)
-        .then(response => response.json()) // 解析 JSON
-        .then(data => {
-            var tableBody = document.getElementById('table-body');
-            tableBody.innerHTML = ""; // 先清空
+    try {
+        // 發送 Request (請求)
+        const response = await fetch(openUrl);
+        if (!response.ok) throw new Error("API 連線失敗");
+        
+        const data = await response.json();
+        renderTable(data);
 
-            data.forEach(item => {
-                // 取得第一筆場次資訊 (因為一場展覽可能有多個時間地點)
-                var info = item.showInfo[0] || {}; 
-                
-                var row = `
-                    <tr>
-                        <td>${item.title}</td>
-                        <td>${info.location || "暫無地點"}</td>
-                        <td>${info.price || "免費/請洽官網"}</td>
-                    </tr>
-                `;
-                tableBody.innerHTML += row;
-            });
-        })
-        .catch(error => {
-            console.error("抓取失敗：", error);
-        });
+    } catch (error) {
+        console.warn("無法取得 API 資料，改用模擬資料顯示...", error);
+        // 如果 API 失敗，顯示一組測試資料，確認你的 Table (表格) 運作正常
+        const mockData = [
+            { title: "測試展覽 A", showInfo: [{ location: "台中科博館", price: "100元" }] },
+            { title: "測試展覽 B", showInfo: [{ location: "台北美術館", price: "免費" }] }
+        ];
+        renderTable(mockData);
+    }
 }
 
-// 執行
+function renderTable(data) {
+    var tableBody = document.getElementById('table-body');
+    tableBody.innerHTML = ""; // Clear (清空)
+
+    data.slice(0, 10).forEach(item => {
+        var info = (item.showInfo && item.showInfo.length > 0) ? item.showInfo[0] : {};
+        var row = `
+            <tr>
+                <td>${item.title}</td>
+                <td>${info.location || "尚無資訊"}</td>
+                <td>${info.price || "請洽官網"}</td>
+            </tr>
+        `;
+        tableBody.innerHTML += row;
+    });
+}
+
 fetchData();
