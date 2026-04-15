@@ -1,41 +1,38 @@
+var openUrl = "https://cloud.culture.tw/frontsite/trans/SearchShowAction.do?method=doFindTypeJ&category=6";
+
+// 修正重點：使用 DOMContentLoaded 確保 HTML 載入完畢
+document.addEventListener('DOMContentLoaded', function() {
+    fetchData(); 
+});
+
 async function fetchData() {
-    var openUrl = "https://cloud.culture.tw/frontsite/trans/SearchShowAction.do?method=doFindTypeJ&category=6";
     var tableBody = document.getElementById('table-body');
+    
+    // 防錯機制：如果還是抓不到，在 Console 噴出警告，不要讓程式死掉
+    if (!tableBody) {
+        console.error("錯誤：找不到 id 為 'table-body' 的元素，請檢查 HTML 結構！");
+        return;
+    }
 
     try {
-        // 發送 Request (請求)
         const response = await fetch(openUrl);
-        if (!response.ok) throw new Error("API 連線失敗");
-        
         const data = await response.json();
-        renderTable(data);
 
+        tableBody.innerHTML = ""; // 這次保證抓得到目標了！
+
+        data.slice(0, 10).forEach(item => {
+            var info = (item.showInfo && item.showInfo.length > 0) ? item.showInfo[0] : {};
+            var row = `
+                <tr>
+                    <td>${item.title}</td>
+                    <td>${info.location || "無資訊"}</td>
+                    <td>${info.price || "免費"}</td>
+                </tr>
+            `;
+            tableBody.innerHTML += row;
+        });
     } catch (error) {
-        console.warn("無法取得 API 資料，改用模擬資料顯示...", error);
-        // 如果 API 失敗，顯示一組測試資料，確認你的 Table (表格) 運作正常
-        const mockData = [
-            { title: "測試展覽 A", showInfo: [{ location: "台中科博館", price: "100元" }] },
-            { title: "測試展覽 B", showInfo: [{ location: "台北美術館", price: "免費" }] }
-        ];
-        renderTable(mockData);
+        console.error("抓取失敗:", error);
+        tableBody.innerHTML = "<tr><td colspan='3'>連線失敗</td></tr>";
     }
 }
-
-function renderTable(data) {
-    var tableBody = document.getElementById('table-body');
-    tableBody.innerHTML = ""; // Clear (清空)
-
-    data.slice(0, 10).forEach(item => {
-        var info = (item.showInfo && item.showInfo.length > 0) ? item.showInfo[0] : {};
-        var row = `
-            <tr>
-                <td>${item.title}</td>
-                <td>${info.location || "尚無資訊"}</td>
-                <td>${info.price || "請洽官網"}</td>
-            </tr>
-        `;
-        tableBody.innerHTML += row;
-    });
-}
-
-fetchData();
