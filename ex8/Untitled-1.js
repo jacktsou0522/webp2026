@@ -1,22 +1,38 @@
-var url = "https://opendata.cgu.edu.tw/api/get/chart/login/log";
+// 定義資料來源的 URL (可能是政府的 Open Data API)
+const apiUrl = 'https://api.example.com/exhibitions'; 
 
-fetch(url)
-    .then(res => res.json())
-    .then(data => {
-        // 助教的資料結構通常在 data.list 或直接是 data
-        var list = data.list || data; 
-        var str = "";
+async function fetchData() {
+    try {
+        // 使用 fetch 發送 Request (請求)
+        const response = await fetch(apiUrl);
         
-        list.forEach(function(item) {
-            // 依照助教範本格式組合成 tr 標籤
-            str += `<tr>
-                <td>${item.info}</td>
-                <td>${item.gender}</td>
-                <td>${item.value}</td>
-            </tr>`;
-        });
+        // 將回傳的 Response (回應) 轉換為 JSON 格式
+        const data = await response.json();
         
-        // 填入 tbody
-        document.getElementById("data-list").innerHTML = str;
-    })
-    .catch(err => console.error("抓取失敗:", err));
+        // 呼叫渲染函數
+        renderTable(data);
+    } catch (error) {
+        console.error("資料抓取失敗 (Fetch Error):", error);
+    }
+}
+
+function renderTable(items) {
+    const tableBody = document.getElementById('table-body');
+    tableBody.innerHTML = ''; // 清空舊資料
+
+    items.forEach(item => {
+        // 建立新的 Table Row (表格列)
+        const row = `
+            <tr>
+                <td>${item.title}</td>
+                <td>${item.location}</td>
+                <td>${item.price || '免費'}</td>
+            </tr>
+        `;
+        // 插入到 DOM (Document Object Model) 中
+        tableBody.innerHTML += row;
+    });
+}
+
+// 執行函數
+fetchData();
